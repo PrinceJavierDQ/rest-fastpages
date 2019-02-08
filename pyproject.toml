@@ -4,7 +4,7 @@ build-backend = "poetry.masonry.api"
 
 
 [tool.poetry]
-name = "fast-pages"
+name = "fastpages"
 description = "Fast page SaaS project"
 version = "0.1.0"
 readme = "README.md"
