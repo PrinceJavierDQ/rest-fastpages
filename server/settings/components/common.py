@@ -239,6 +239,9 @@ SESSION_ENGINE = "django.contrib.sessions.backends.db"
 
 # Security
 # https://docs.djangoproject.com/en/1.11/topics/security/
+ALLOWED_HOSTS = [
+    config('DOMAIN_NAME')
+]
 
 SESSION_COOKIE_HTTPONLY = True
 CSRF_COOKIE_HTTPONLY = True
