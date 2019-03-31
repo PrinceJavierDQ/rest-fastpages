@@ -45,14 +45,14 @@ class PageViewSet(viewsets.ModelViewSet):
         """
         If provided 'pk' is "me" then return the current user tenant.
         """
-        if (not PageViewSet.isInteger(pk)):
+        if (not PageViewSet.isInteger(self, pk)):
             queryset = Page.objects.all()
             page = get_object_or_404(queryset, slug=pk)
             serializer = serializers.PageSerializer(page)
             return Response(serializer.data)
         return super(PageViewSet, self).retrieve(request, pk)
 
-    def isInteger(val):
+    def isInteger(self, val):
         try:
             val = int(val)
             return True
