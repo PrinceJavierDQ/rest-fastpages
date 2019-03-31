@@ -18,12 +18,13 @@ from django.views.generic import TemplateView
 
 from server.main_app import urls as main_urls
 from server.main_app.views import index
+
 from rest_framework_simplejwt import views as jwt_views
 from .api.base.router import api_urlpatterns as api_v1
 from .api.base.jwt_views import MyTokenObtainPairView
 
 admin.autodiscover()
-
+admin.site.site_header = 'Fast Page Administration'
 
 urlpatterns = [
     # django-admin:
@@ -32,6 +33,7 @@ urlpatterns = [
 
     # Apps:
     url(r'^main/', include(main_urls)),
+
 
     # Text and xml static files:
     url(r'^robots\.txt$', TemplateView.as_view(
@@ -47,9 +49,9 @@ urlpatterns = [
     url(r'^$', index, name='index'),
 
     # api
-    # url(r'^api-auth/token/', jwt_views.TokenObtainPairView.as_view(), name='token_obtain_pair'),
-    url(r'^api-auth/token/', MyTokenObtainPairView.as_view(), name='token_obtain_pair'),
-    url(r'^api-auth/token/refresh/', jwt_views.TokenRefreshView.as_view(), name='token_refresh'),
+    # url(r'^api/auth/token/', jwt_views.TokenObtainPairView.as_view(), name='token_obtain_pair'),
+    url(r'^api/auth/token/', MyTokenObtainPairView.as_view(), name='token_obtain_pair'),
+    url(r'^api/auth/token/refresh/', jwt_views.TokenRefreshView.as_view(), name='token_refresh'),
     url(r'^api/v1/', include(api_v1)),
 ]
 

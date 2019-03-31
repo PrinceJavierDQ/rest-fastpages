@@ -9,15 +9,18 @@ class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
 
         # Add custom claims
         token['email'] = user.email
-        token['first_name'] = user.first_name
-        token['last_name'] = user.last_name
-        token['tenant_name'] = 'test'
-        # ...
+        tenant = user.tenants.first()
+        if tenant:
+            token['api_url'] = tenant.domain_url
+        else:
+            token['api_url'] = ''
 
+        # ...
         return token
 
 
 class MyTokenObtainPairView(TokenObtainPairView):
     serializer_class = MyTokenObtainPairSerializer
+
 
 token_obtain_pair = MyTokenObtainPairView.as_view()

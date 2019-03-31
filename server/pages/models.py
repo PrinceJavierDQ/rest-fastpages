@@ -1,0 +1,20 @@
+from django.db import models
+
+class Page(models.Model):
+    title = models.CharField(max_length=200)
+    slug = models.CharField(max_length=20)
+    status = models.BooleanField(default=True)
+    product_name = models.CharField(null=True, max_length=200)
+    product_price = models.DecimalField(default=0, decimal_places=3, max_digits=8)
+    product_discount_price = models.DecimalField(default=0, decimal_places=3, max_digits=8)
+    product_description = models.TextField(null=True, blank=True)
+    product_details = models.TextField(null=True, blank=True)
+    product_size_image: models.ImageField(null=True)
+    product_image1 = models.ImageField(null=True)
+    product_image2 = models.ImageField(null=True)
+    product_image3 = models.ImageField(null=True)
+    product_image4 = models.ImageField(null=True)
+    product_showcase1 = models.ImageField(null=True)
+    product_showcase2 = models.ImageField(null=True)
+    product_showcase3 = models.ImageField(null=True)
+    product_showcase4 = models.FileField(upload_to='videos/', null=True, verbose_name="")

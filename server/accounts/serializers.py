@@ -2,7 +2,7 @@ from .models import TenantUser
 from rest_framework import serializers
 
 
-class TenantUserSerializer(serializers.HyperlinkedModelSerializer):
+class TenantUserSerializer(serializers.ModelSerializer):
     class Meta:
         model = TenantUser
         fields = ('email', 'first_name', 'last_name')

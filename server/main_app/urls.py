@@ -4,6 +4,7 @@ from django.conf.urls import url
 
 from server.main_app.views import index
 
+
 # Place your URLs here:
 
 urlpatterns = [

@@ -61,6 +61,9 @@ TENANT_APPS: Tuple[str, ...] = (
 
     # REST
     'rest_framework',   # Defined in both shared apps and tenant apps
+
+    # Your apps go here:
+    'server.pages',
 )
 
 INSTALLED_APPS: Tuple[str, ...] = (
@@ -88,6 +91,7 @@ INSTALLED_APPS: Tuple[str, ...] = (
 
     # Your apps go here:
     'server.main_app',
+    'server.pages',
 
     # REST
     'rest_framework',
@@ -97,6 +101,7 @@ INSTALLED_APPS: Tuple[str, ...] = (
 )
 
 MIDDLEWARE: Tuple[str, ...] = (
+    'corsheaders.middleware.CorsMiddleware',
     # Content Security Policy:
     'csp.middleware.CSPMiddleware',
 
@@ -108,7 +113,6 @@ MIDDLEWARE: Tuple[str, ...] = (
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.locale.LocaleMiddleware',
-    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     # 'django.contrib.auth.middleware.SessionAuthenticationMiddleware',
@@ -180,6 +184,8 @@ TIME_ZONE = 'UTC'
 DEFAULT_FILE_STORAGE = 'tenant_schemas.storage.TenantFileSystemStorage'
 
 STATIC_URL = '/static/'
+MEDIA_ROOT = '/data/media'
+MEDIA_URL = '/media/'
 
 STATICFILES_FINDERS = (
     'django.contrib.staticfiles.finders.FileSystemFinder',
@@ -240,13 +246,20 @@ SESSION_ENGINE = "django.contrib.sessions.backends.db"
 # Security
 # https://docs.djangoproject.com/en/1.11/topics/security/
 ALLOWED_HOSTS = [
-    config('DOMAIN_NAME')
+    config('DOMAIN_NAME'),
+    'edutech.fastpages.code',
+    '.fastpages.code',
 ]
 
 SESSION_COOKIE_HTTPONLY = True
 CSRF_COOKIE_HTTPONLY = True
 SECURE_CONTENT_TYPE_NOSNIFF = True
 SECURE_BROWSER_XSS_FILTER = True
+
+CORS_ORIGIN_ALLOW_ALL=True
+CORS_ORIGIN_REGEX_WHITELIST = (
+    r'^(http?://)?(\w+\.)?fastpages.code$',
+)
 
 X_FRAME_OPTIONS = 'DENY'
 

@@ -6,7 +6,16 @@
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
+    'filters': {
+        'tenant_context': {
+            '()': 'tenant_schemas.log.TenantContextFilter'
+        },
+    },
     'formatters': {
+        'tenant_context': {
+            'format': '[%(schema_name)s:%(domain_url)s] '
+            '%(levelname)-7s %(asctime)s %(message)s',
+        },
         'verbose': {
             'format': (
                 '%(asctime)s [%(process)d] [%(levelname)s] '
@@ -24,7 +33,8 @@ LOGGING = {
         'console': {
             'level': 'DEBUG',
             'class': 'logging.StreamHandler',
-            'formatter': 'simple',
+            'formatter': 'tenant_context',
+            'filters': ['tenant_context'],
         },
         'console-verbose': {
             'level': 'DEBUG',

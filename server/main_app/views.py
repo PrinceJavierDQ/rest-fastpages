@@ -12,3 +12,14 @@ def index(request):
     Returns rendered default page to the user.
     """
     return render(request, 'main_app/index.html')
+
+
+def page(request):
+
+    """
+    Main (or index) view.
+
+    Returns rendered default page to the user.
+    """
+    return render(request, 'pages/index.html')
+

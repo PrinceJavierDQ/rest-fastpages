@@ -7,13 +7,12 @@ This file is required and if development.py is present these
 values are overridden.
 """
 
-from server.settings.components.common import config
-
+from server.settings.components.common import config, ALLOWED_HOSTS
 # Production flags:
 
 DEBUG = False
 
-ALLOWED_HOSTS = [
+ALLOWED_HOSTS +=[
     # TODO: check production hosts
     config('DOMAIN_NAME'),
 ]

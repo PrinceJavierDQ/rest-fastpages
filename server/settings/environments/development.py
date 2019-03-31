@@ -9,7 +9,7 @@ SECURITY WARNING: don't run with debug turned on in production!
 import logging
 from typing import List
 
-from server.settings.components.common import INSTALLED_APPS, MIDDLEWARE
+from server.settings.components.common import INSTALLED_APPS, MIDDLEWARE, ALLOWED_HOSTS
 
 # Setting the development status:
 
@@ -38,6 +38,9 @@ MIDDLEWARE += (
     'querycount.middleware.QueryCountMiddleware',
 )
 
+ALLOWED_HOSTS += [
+    '.fastpages.code'
+]
 
 def custom_show_toolbar(request):
     """Only show the debug toolbar to users with the superuser flag."""
