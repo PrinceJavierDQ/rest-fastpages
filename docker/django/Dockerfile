@@ -28,7 +28,13 @@ RUN apk --no-cache add \
      musl-dev \
      postgresql-dev \
      tini \
+     python-dev \
+     py-pip \
+     jpeg-dev \
+     zlib-dev \
   && pip install "poetry==$POETRY_VERSION"
+
+ENV LIBRARY_PATH=/lib:/usr/lib
 
 # Copy only requirements to cache them in docker layer
 WORKDIR /code
