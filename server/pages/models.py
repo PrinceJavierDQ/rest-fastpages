@@ -14,6 +14,8 @@ class Page(models.Model):
     product_image2 = models.ImageField(null=True)
     product_image3 = models.ImageField(null=True)
     product_image4 = models.ImageField(null=True)
+    product_image5 = models.ImageField(null=True)
+    product_image6 = models.ImageField(null=True)
     product_showcase1 = models.ImageField(null=True)
     product_showcase2 = models.ImageField(null=True)
     product_showcase3 = models.ImageField(null=True)
