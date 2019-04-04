@@ -9,7 +9,7 @@ class Page(models.Model):
     product_discount_price = models.DecimalField(default=0, decimal_places=3, max_digits=8)
     product_description = models.TextField(null=True, blank=True)
     product_details = models.TextField(null=True, blank=True)
-    product_size_image: models.ImageField(null=True)
+    product_size_image = models.ImageField(null=True)
     product_image1 = models.ImageField(null=True)
     product_image2 = models.ImageField(null=True)
     product_image3 = models.ImageField(null=True)

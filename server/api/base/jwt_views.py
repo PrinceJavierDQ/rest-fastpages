@@ -11,9 +11,12 @@ class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
         token['email'] = user.email
         tenant = user.tenants.first()
         if tenant:
-            token['api_url'] = tenant.domain_url
+            token['tenant_url'] = tenant.domain_url
+            token['tenant_name'] = tenant.name
+
         else:
             token['api_url'] = ''
+            token['tenant_name'] = ''
 
         # ...
         return token
