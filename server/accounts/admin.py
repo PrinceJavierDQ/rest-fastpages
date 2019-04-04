@@ -1,8 +1,9 @@
 from django import forms
 from django.contrib import admin
-from django.contrib.auth.forms import ReadOnlyPasswordHashField, UserCreationForm, UserChangeForm
 from tenant_users.permissions.models import UserTenantPermissions
+from django.contrib.auth import admin as auth_admin
 from .models import TenantUser
+from .forms import UserChangeForm, UserCreationForm
 
 # Register your models here.
 
@@ -34,57 +35,32 @@ class TenantUserCreationForm(forms.ModelForm):
         return user
 
 
-class TenantUserChangeForm(forms.ModelForm):
-    """A form for updating users. Includes all the fields on
-    the user, but replaces the password field with admin's
-    password hash display field.
-    """
-    password = ReadOnlyPasswordHashField(label="Password",
-                                         help_text=("Raw passwords are not stored, so there is no way to see "
-                                                    "this user's password, but you can change the password "
-                                                    "using <a href=\"password/\">this form</a>."))
-
-    class Meta:
-        model = TenantUser
-        fields = {'email', 'password', 'first_name', 'last_name', 'is_active', 'is_verified'}
-
-    def clean_password(self):
-        # Regardless of what the user provides, return the initial value.
-        # This is done here, rather than on the field, because the
-        # field does not have access to the initial value
-        return self.initial["password"]
-
-
 class TenantUserAdmin(admin.ModelAdmin):
-    add_form = TenantUserCreationForm
-    change_form = TenantUserChangeForm
-
-    list_display = ('email', 'first_name', 'last_name', 'is_active', 'is_verified', 'last_login')
-    list_filter = ['is_active', 'is_verified']
     fieldsets = (
-        (None, {'fields': ('email',)}),
+        (None, {'fields': ('email', 'password')}),
         ('Personal info', {'fields': ('first_name', 'last_name')}),
-        ('Permissions', {'fields': ('is_active', 'is_verified',)}),
-        ('Tenants', {'fields': ('tenants',)}),
+        ('Permissions', {'fields': ('is_active', 'is_verified')}),
         ('Important dates', {'fields': ('last_login',)}),
     )
-    add_fieldsets = (
-        ( None, {
-            'classes': ('wide',),
-            'fields': ('email', 'first_name', 'last_name', 'password1', 'password2')}
-        ),
+    limited_fieldsets = (
+        (None, {'fields': ('email',)}),
+        ('Personal info', {'fields': ('first_name', 'last_name')}),
+        ('Important dates', {'fields': 'last_login',}),
     )
-    search_fields = ('email',)
+    add_fieldsets = (
+        (None, {
+            'classes': ('wide',),
+            'fields': ('email', 'password1', 'password2')}
+         ),
+    )
+    form = UserChangeForm
+    add_form = UserCreationForm
+    change_password_form = auth_admin.AdminPasswordChangeForm
+    list_display = ('email', 'first_name', 'last_name')
+    list_filter = ('is_active',)
+    search_fields = ('first_name', 'last_name', 'email')
     ordering = ('email',)
-    filter_horizontal = ()
-
-    def get_form(self, request, obj=None, **kwargs):
-        if not obj:     # add new user
-            self.form = self.add_form
-        else:           # edit existing user
-            self.form = self.change_form
-
-        return super(TenantUserAdmin, self).get_form(request, obj, **kwargs)
+    readonly_fields = ('last_login',)
 
 
 @admin.register(UserTenantPermissions)
