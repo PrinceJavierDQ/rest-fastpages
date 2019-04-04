@@ -346,7 +346,7 @@ description = "A minimal JSON Web Token authentication plugin for Django REST Fr
 name = "djangorestframework-simplejwt"
 optional = false
 python-versions = "*"
-version = "3.3"
+version = "4.1.2"
 
 [package.dependencies]
 django = "*"
@@ -1545,7 +1545,7 @@ python-versions = ">=2.7"
 version = "0.3.3"
 
 [metadata]
-content-hash = "78a32e35cfe702638f0a2846f8a27a4f23484b558507fbda13ebe2531ba7b8f8"
+content-hash = "be4e5394805fdedcdf892107e877f9614b777248af0df0ffac773358aeb5b0d5"
 python-versions = "^3.6"
 
 [metadata.hashes]
@@ -1584,7 +1584,7 @@ django-split-settings = ["04f6b551111fdbcb4f669ac9004ac2d4a27197a36ca88444cb8963
 django-tenant-schemas = ["7d3f96f6e1969ade79b22a7600553fa8843c8aff77dbbad8f1e1e7523b9a0cd3"]
 django-tenant-users = ["4e38e9474bcc942c4f4b3b48779a72dc09a182b078a3fcce44802d467987d53a"]
 djangorestframework = ["8a435df9007c8b7d8e69a21ef06650e3c0cbe0d4b09e55dd1bd74c89a75a9fcd", "f7a266260d656e1cf4ca54d7a7349609dc8af4fe2590edd0ecd7d7643ea94a17"]
-djangorestframework-simplejwt = ["9796dd89086999993475a25f2a8ba39b56a5b372cf9b2475d9b29afcf7737be6", "ce118a3f39499de980aeffef020f421b4689bc8cc14ad236b06a7f6f3d137784"]
+djangorestframework-simplejwt = ["9e0bde3663c16ff3206c174806ba139d6f62b536332556a0fa56f723a6245fd4", "e0baee46d6442e30ccc8f12ffc81bfbcc3580de0e9bd7135b4f9199afa4fbedb"]
 doc8 = ["2df89f9c1a5abfb98ab55d0175fed633cae0cf45025b8b1e0ee5ea772be28543", "d12f08aa77a4a65eb28752f4bc78f41f611f9412c4155e2b03f1f5d4a45efe04"]
 docopt = ["49b3a825280bd66b3aa83585ef59c4a8c82f2c8a522dbe754a8bc8d08c85c491"]
 docutils = ["02aec4bd92ab067f6ff27a38a38a41173bf01bed8f89157768c1573f53e474a6", "51e64ef2ebfb29cae1faa133b3710143496eca21c530f3f71424d77687764274", "7a4bd47eaf6596e1295ecb11361139febe29b084a87bf005bf899f9a42edc3c6"]

@@ -27,7 +27,7 @@ django-tenant-schemas = "^1.9"
 django-tenant-users = "^0.3.11"
 django-rest-auth = "^0.9.3"
 django-cors-headers = "^2.4"
-djangorestframework_simplejwt = "^3.3"
+djangorestframework_simplejwt = "^4.1"
 drf-rw-serializers = "^1.0"
 pillow = "^5.4"
 
