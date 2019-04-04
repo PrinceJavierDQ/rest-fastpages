@@ -40,11 +40,14 @@ SHARED_APPS: Tuple[str, ...] = (
     # Security:
     'axes',
 
+    # Profiling
+    # 'silk',
+
     # REST
     'rest_framework',   # Defined in both shared apps and tenant apps
     # REST authentication
-    'rest_framework.authtoken',
-    'rest_auth',
+    # 'rest_framework.authtoken',
+    # 'rest_auth',
 )
 
 TENANT_APPS: Tuple[str, ...] = (
@@ -58,6 +61,9 @@ TENANT_APPS: Tuple[str, ...] = (
 
     # Security:
     'axes',
+
+    # Profiling
+    # 'silk',
 
     # REST
     'rest_framework',   # Defined in both shared apps and tenant apps
@@ -89,6 +95,8 @@ INSTALLED_APPS: Tuple[str, ...] = (
     # Security:
     'axes',
 
+    # 'silk',
+
     # Your apps go here:
     'server.main_app',
     'server.pages',
@@ -96,12 +104,14 @@ INSTALLED_APPS: Tuple[str, ...] = (
     # REST
     'rest_framework',
     'rest_framework.authtoken',
-    'rest_auth',
+    # 'rest_auth',
     'corsheaders',
 )
 
 MIDDLEWARE: Tuple[str, ...] = (
     'corsheaders.middleware.CorsMiddleware',
+    # 'silk.middleware.SilkyMiddleware',
+
     # Content Security Policy:
     'csp.middleware.CSPMiddleware',
 

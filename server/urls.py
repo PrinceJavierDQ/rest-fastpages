@@ -48,10 +48,11 @@ urlpatterns = [
     # It is a good practice to have explicit index view:
     url(r'^$', index, name='index'),
 
+    # url(r'^silk/', include('silk.urls', namespace='silk'))
     # api
     # url(r'^api/auth/token/', jwt_views.TokenObtainPairView.as_view(), name='token_obtain_pair'),
-    url(r'^api/auth/token/', MyTokenObtainPairView.as_view(), name='token_obtain_pair'),
-    url(r'^api/auth/token/refresh/', jwt_views.TokenRefreshView.as_view(), name='token_refresh'),
+    url(r'^api/auth/token/$', MyTokenObtainPairView.as_view(), name='token_obtain_pair'),
+    url(r'^api/auth/token/refresh/$', jwt_views.TokenRefreshView.as_view(), name='token_refresh'),
     url(r'^api/v1/', include(api_v1)),
 ]
 
