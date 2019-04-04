@@ -65,7 +65,7 @@ To start development server inside ``docker`` you will need to run:
 .. code:: bash
 
   docker-compose build
-  docker-compose run --rm web python manage.py migrate
+  docker-compose run --rm web python manage.py migrate_schemas
   docker-compose up
 
 Running scripts inside docker
