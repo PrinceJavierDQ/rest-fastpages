@@ -12,6 +12,7 @@ files serving technique in development.
 """
 
 from django.conf import settings
+from django.conf.urls.static import static
 from django.conf.urls import include, url
 from django.contrib import admin
 from django.views.generic import TemplateView
@@ -30,6 +31,7 @@ urlpatterns = [
     # django-admin:
     url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
     url(r'^admin/', admin.site.urls),
+    url(r'^admin/accounts/', admin.site.urls),
 
     # Apps:
     url(r'^main/', include(main_urls)),
@@ -55,6 +57,8 @@ urlpatterns = [
     url(r'^api/auth/token/refresh/$', jwt_views.TokenRefreshView.as_view(), name='token_refresh'),
     url(r'^api/v1/', include(api_v1)),
 ]
+
+urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 if settings.DEBUG:  # pragma: no cover
     import debug_toolbar  # noqa: Z435

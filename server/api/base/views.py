@@ -1,12 +1,13 @@
 from rest_framework import viewsets
+from rest_framework.parsers import JSONParser,  MultiPartParser, FormParser
 from rest_framework.response import Response
-from rest_framework.generics import RetrieveAPIView
 from rest_framework import permissions
 from django.shortcuts import get_object_or_404
 from server.tenants.models import Client
 from server.accounts.models import TenantUser
 from server.pages.models import Page
 from . import serializers
+
 
 class UserViewSet(viewsets.ModelViewSet):
     queryset = TenantUser.objects.all()
@@ -36,29 +37,39 @@ class ClientViewSet(viewsets.ModelViewSet):
 
 
 class PageViewSet(viewsets.ModelViewSet):
+    """
+    This viewset automatically provides `list`, `create`, `retrieve`,
+    `update` and `destroy` actions.
+
+    Additionally we also provide extra actions.
+    """
     queryset = Page.objects.all()
     serializer_class = serializers.PageSerializer
     permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
+    parser_classes = (MultiPartParser, FormParser, )
 
+    def get_serializer_class(self):
+        if self.action == 'retrieve':
+            return serializers.PageSerializer
+        else:
+            return serializers.PageListSerializer
 
     def retrieve(self, request, pk=None):
         """
         If provided 'pk' is "me" then return the current user tenant.
         """
-        if (not PageViewSet.isInteger(self, pk)):
+        if not PageViewSet.is_integer(self, pk):
             queryset = Page.objects.all()
             page = get_object_or_404(queryset, slug=pk)
             serializer = serializers.PageSerializer(page)
             return Response(serializer.data)
         return super(PageViewSet, self).retrieve(request, pk)
 
-    def isInteger(self, val):
+    def is_integer(self, val):
         try:
             val = int(val)
             return True
         except ValueError:
             pass
             return False
-
-        return False
 

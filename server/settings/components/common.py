@@ -9,9 +9,8 @@ https://docs.djangoproject.com/en/1.11/topics/settings/
 For the full list of settings and their config, see
 https://docs.djangoproject.com/en/1.11/ref/settings/
 """
-
+import os
 from typing import Tuple
-
 from server.settings.components import BASE_DIR, config
 
 # Quick-start development settings - unsuitable for production
@@ -194,8 +193,8 @@ TIME_ZONE = 'UTC'
 DEFAULT_FILE_STORAGE = 'tenant_schemas.storage.TenantFileSystemStorage'
 
 STATIC_URL = '/static/'
-MEDIA_ROOT = '/data/media'
 MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 
 STATICFILES_FINDERS = (
     'django.contrib.staticfiles.finders.FileSystemFinder',

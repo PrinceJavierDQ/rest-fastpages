@@ -19,8 +19,31 @@ class TenantUserSerializer(serializers.ModelSerializer):
         fields = ('id', 'email', 'first_name', 'last_name', 'tenants')
 
 
-class PageSerializer(serializers.ModelSerializer):
+class PageListSerializer(serializers.ModelSerializer):
+
+    product_image1 = serializers.ImageField(max_length=None, use_url=True)
+    product_image2 = serializers.ImageField(max_length=None, use_url=True)
+    product_image3 = serializers.ImageField(max_length=None, use_url=True)
 
     class Meta:
         model = Page
-        fields = ('id', 'title', 'slug', 'status')
+        fields = ('id', 'title', 'slug', 'status', 'available_on', 'available_off',
+                  'product_name', 'product_price', 'product_discount_price',
+                  'product_image1', 'product_image2', 'product_image3')
+
+
+class PageSerializer(serializers.ModelSerializer):
+
+    product_image1 = serializers.ImageField(max_length=None, use_url=True)
+    product_image2 = serializers.ImageField(max_length=None, use_url=True)
+    product_image3 = serializers.ImageField(max_length=None, use_url=True)
+    product_image4 = serializers.ImageField(max_length=None, use_url=True)
+    product_image5 = serializers.ImageField(max_length=None, use_url=True)
+    product_image6 = serializers.ImageField(max_length=None, use_url=True)
+
+    class Meta:
+        model = Page
+        fields = ('id', 'title', 'slug', 'status',
+                  'product_image1', 'product_image2', 'product_image3', 'product_image4', 'product_image5',
+                  'product_image6'
+                  )
