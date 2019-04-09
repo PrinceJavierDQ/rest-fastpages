@@ -30,6 +30,7 @@ django-cors-headers = "^2.4"
 djangorestframework_simplejwt = "^4.1"
 drf-rw-serializers = "^1.0"
 pillow = "^5.4"
+bumpversion = "^0.5.3"
 
 
 [tool.poetry.dev-dependencies]
