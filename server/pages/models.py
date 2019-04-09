@@ -26,7 +26,7 @@ class Page(models.Model):
     product_discount_until = models.DateTimeField(null=True, blank=True)
     product_description = models.TextField(null=True, blank=True)
     product_details = models.TextField(null=True, blank=True)
-    product_size_image = models.ImageField(upload_to=upload_helper)
+    product_size_image = models.ImageField(upload_to=upload_helper, null=True)
     product_image1 = models.ImageField(upload_to=upload_helper, null=True)
     product_image2 = models.ImageField(upload_to=upload_helper, null=True)
     product_image3 = models.ImageField(upload_to=upload_helper, null=True)

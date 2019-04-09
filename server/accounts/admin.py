@@ -1,7 +1,6 @@
 from django import forms
 from django.contrib import admin
 from tenant_users.permissions.models import UserTenantPermissions
-from django.contrib.auth import admin as auth_admin
 from .models import TenantUser
 from .forms import UserChangeForm, UserCreationForm
 
@@ -19,6 +18,14 @@ class TenantUserAdmin(admin.ModelAdmin):
          ('Personal Info', {'fields': ('first_name', 'last_name') }),
          ('Status', {'fields': ('is_active', 'is_verified', 'last_login') })
          )
+
+    def get_form(self, request, obj=None, **kwargs):
+        # Proper kwargs are form, fields, exclude, formfield_callback
+        if obj is None:
+            self.form = UserCreationForm
+        else:
+            self.form = UserChangeForm
+        return super(TenantUserAdmin, self).get_form(request, obj, **kwargs)
 
 
 @admin.register(UserTenantPermissions)

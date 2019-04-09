@@ -31,7 +31,6 @@ urlpatterns = [
     # django-admin:
     url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
     url(r'^admin/', admin.site.urls),
-    url(r'^admin/accounts/', admin.site.urls),
 
     # Apps:
     url(r'^main/', include(main_urls)),
