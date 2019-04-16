@@ -65,6 +65,9 @@ class PageViewSet(viewsets.ModelViewSet):
             return Response(serializer.data)
         return super(PageViewSet, self).retrieve(request, pk)
 
+    def perform_create(self, serializer):
+        return serializer.save(owner=self.request.user)
+    
     def is_integer(self, val):
         try:
             val = int(val)

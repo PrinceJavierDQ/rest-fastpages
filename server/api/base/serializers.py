@@ -21,10 +21,6 @@ class TenantUserSerializer(serializers.ModelSerializer):
 
 class PageListSerializer(serializers.ModelSerializer):
 
-    product_image1 = serializers.ImageField(max_length=None, use_url=True)
-    product_image2 = serializers.ImageField(max_length=None, use_url=True)
-    product_image3 = serializers.ImageField(max_length=None, use_url=True)
-
     class Meta:
         model = Page
         fields = ('id', 'title', 'slug', 'status', 'available_on', 'available_off',
@@ -43,7 +39,7 @@ class PageSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Page
-        fields = ('id', 'title', 'slug', 'status',
-                  'product_image1', 'product_image2', 'product_image3', 'product_image4', 'product_image5',
-                  'product_image6'
-                  )
+        fields = '__all__'
+        create_only_fields = ('title', 'slug', 'status', 'available_on', 'available_off')
+
+

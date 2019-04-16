@@ -183,6 +183,7 @@ LOCALE_PATHS = (
     'locale/',
 )
 
+# Store Datetime in database as UTC
 USE_TZ = True
 TIME_ZONE = 'UTC'
 

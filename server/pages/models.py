@@ -3,13 +3,15 @@ import uuid
 from django.db import models
 from django.template.defaultfilters import slugify
 from django.db.models.signals import pre_save
+from server.accounts.models import TenantUser
 
 
 def upload_helper(instance, filename):
     ext = filename.rsplit(u'.', 1)[1]
     name = u'%s.%s' % (uuid.uuid1().hex[:8], ext)
     model_name = (instance.__class__.__name__).lower()
-    return os.path.join(u'uploads', model_name, name)
+    instance_id = instance.id
+    return os.path.join(u'uploads', model_name, str(instance_id), name)
 
 
 class Page(models.Model):
@@ -37,9 +39,41 @@ class Page(models.Model):
     product_showcase2 = models.ImageField(upload_to=upload_helper,null=True)
     product_showcase3 = models.ImageField(upload_to=upload_helper,null=True)
     product_showcase4 = models.FileField(upload_to=upload_helper, null=True, verbose_name="")
+    owner = models.ForeignKey(TenantUser, related_name='owner', on_delete=models.CASCADE)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    updated_by = models.ForeignKey(TenantUser, related_name='updater', on_delete=models.SET_NULL, null=True)
 
     class Meta:
         ordering = ["-available_on"]
+
+
+class ProductVariant(models.Model):
+    name = models.CharField(max_length=200)
+    unit_price = models.DecimalField(default=0, decimal_places=2, max_digits=8)
+    discount_price = models.DecimalField(default=0, decimal_places=2, max_digits=8)
+    page = models.ForeignKey(Page, on_delete=models.CASCADE)
+    image = models.ImageField(upload_to=upload_helper, null=True)
+
+
+class Order(models.Model):
+    page = models.ForeignKey(Page, on_delete=models.CASCADE)
+    full_name = models.CharField(max_length=200)
+    phone_no = models.CharField(max_length=20)
+    address = models.CharField(max_length=200)
+    sub_district = models.CharField(max_length=100, help_text="ตำบล")
+    district = models.CharField(max_length=100, help_text="อำเภอ")
+    province = models.CharField(max_length=100)
+    postal_code = models.CharField(max_length=20)
+    created_at = models.DateTimeField(auto_now_add=True)
+    status = models.PositiveSmallIntegerField(default=0)
+
+
+class OderItem(models.Model):
+    order = models.ForeignKey(Order, on_delete=models.CASCADE)
+    product_variant = models.ForeignKey(ProductVariant, on_delete=models.CASCADE)
+    quantity = models.PositiveIntegerField(default=1)
+    unit_price = models.DecimalField(default=0, decimal_places=2, max_digits=8)
 
 
 def create_slug(instance, new_slug=None):
