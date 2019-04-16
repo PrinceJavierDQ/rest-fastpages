@@ -25,7 +25,7 @@ class Page(models.Model):
     product_name = models.CharField(null=True, max_length=200)
     product_price = models.DecimalField(default=0, decimal_places=3, max_digits=8)
     product_discount_price = models.DecimalField(default=0, decimal_places=3, max_digits=8)
-    product_discount_until = models.DateTimeField(null=True, blank=True)
+    product_discount_until = models.DateField(null=True, blank=True)
     product_description = models.TextField(null=True, blank=True)
     product_details = models.TextField(null=True, blank=True)
     product_size_image = models.ImageField(upload_to=upload_helper, null=True)
@@ -48,32 +48,26 @@ class Page(models.Model):
         ordering = ["-available_on"]
 
 
-class ProductVariant(models.Model):
-    name = models.CharField(max_length=200)
-    description = models.TextField(null=True, blank=True)
-    unit_price = models.DecimalField(default=0, decimal_places=2, max_digits=8)
-    discount_price = models.DecimalField(default=0, decimal_places=2, max_digits=8)
-    page = models.ForeignKey(Page, on_delete=models.CASCADE)
-    image = models.ImageField(upload_to=upload_helper, null=True)
-
-
-class VariantOption(models.Model):
-    page = models.ForeignKey(Page, on_delete=models.CASCADE)
-    name = models.CharField(max_length=200, help_text="Size, Material, Colour")
-
-
-class VariantValue(models.Model):
-    page = models.ForeignKey(Page, on_delete=models.CASCADE)
-    value = models.CharField(max_length=200, help_text="S,M,XL for size option")
-
-
 class ProductVariantOption(models.Model):
-    product_variant = models.ForeignKey(ProductVariant, on_delete=models.CASCADE)
-    variant_option = models.ForeignKey(VariantOption, on_delete=models.CASCADE)
-    variant_value = models.ForeignKey(VariantValue,on_delete=models.CASCADE)
+    page = models.ForeignKey(Page, on_delete=models.CASCADE)
+    variant_name = models.CharField(max_length=100) # Size or Colour
+    variant_value = models.CharField(max_length=100) # S (Size) or Red (Colour)
 
     class Meta:
-        unique_together = (('variant_option', 'variant_value'),)
+        unique_together = (('page', 'variant_name', 'variant_value'),)
+
+
+class ProductVariant(models.Model):
+    page = models.ForeignKey(Page, on_delete=models.CASCADE)
+
+
+# Product Variant
+#   Colour = Red, Size = Small
+
+
+class ProductVariantDetail(models.Model):
+    product_variant = models.ForeignKey(ProductVariant, on_delete=models.CASCADE)
+    variant_option = models.ForeignKey(ProductVariantOption, on_delete=models.CASCADE)
 
 
 class Order(models.Model):
@@ -94,7 +88,6 @@ class OrderItem(models.Model):
     product_variant = models.ForeignKey(ProductVariant, on_delete=models.CASCADE)
     quantity = models.PositiveIntegerField(default=1)
     unit_price = models.DecimalField(default=0, decimal_places=2, max_digits=8)
-
 
 
 def create_slug(instance, new_slug=None):

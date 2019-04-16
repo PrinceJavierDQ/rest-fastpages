@@ -19,4 +19,4 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         create_public_tenant(config('DOMAIN_NAME'), options['email'])
-        TenantUser.objects.create_superuser(email=options['email'], password=options['password'], is_active=True)
+        # TenantUser.objects.create_superuser(email=options['email'], password=options['password'], is_active=True)
