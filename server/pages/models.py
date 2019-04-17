@@ -49,7 +49,7 @@ class Page(models.Model):
 
 
 class ProductVariantOption(models.Model):
-    page = models.ForeignKey(Page, on_delete=models.CASCADE)
+    page = models.ForeignKey(Page, on_delete=models.CASCADE, related_name='product_variant_options')
     variant_name = models.CharField(max_length=100) # Size or Colour
     variant_value = models.CharField(max_length=100) # S (Size) or Red (Colour)
 

@@ -1,6 +1,7 @@
 from django.core.management.base import BaseCommand
 from server.accounts.models import TenantUser
 from server.settings.components import config
+from django.contrib.auth import get_user_model
 
 # from tenant_users.tenants.tasks import provision_tenant
 from tenant_users.tenants.utils import create_public_tenant
@@ -18,5 +19,11 @@ class Command(BaseCommand):
         parser.add_argument('password', nargs='+', type=str)
 
     def handle(self, *args, **options):
-        create_public_tenant(config('DOMAIN_NAME'), options['email'])
-        # TenantUser.objects.create_superuser(email=options['email'], password=options['password'], is_active=True)
+        email = options['email'][0]
+        password = options['password'][0]
+        create_public_tenant(config('DOMAIN_NAME'), email)
+        UserModel = get_user_model()
+        user = UserModel.objects.filter(email=email).first()
+        if user:
+            user.set_password(password)
+            user.save()
