@@ -23,9 +23,9 @@ class Page(models.Model):
     available_off = models.DateField(null=True, blank=True)
     hit_count = models.IntegerField(default=0)
     product_name = models.CharField(null=True, max_length=200)
-    product_price = models.DecimalField(default=0, decimal_places=3, max_digits=8)
-    product_discount_price = models.DecimalField(default=0, decimal_places=3, max_digits=8)
-    product_discount_until = models.DateField(null=True, blank=True)
+    product_price = models.DecimalField(default=0, decimal_places=2, max_digits=8)
+    product_discount_price = models.DecimalField(default=0, decimal_places=2, max_digits=8)
+    product_discount_until = models.DateTimeField(null=True, blank=True)
     product_description = models.TextField(null=True, blank=True)
     product_details = models.TextField(null=True, blank=True)
     product_size_image = models.ImageField(upload_to=upload_helper, null=True)
@@ -42,7 +42,7 @@ class Page(models.Model):
     owner = models.ForeignKey(TenantUser, related_name='owner', on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-    updated_by = models.ForeignKey(TenantUser, related_name='updater', on_delete=models.SET_NULL, null=True)
+    updater = models.ForeignKey(TenantUser, related_name='updater', on_delete=models.SET_NULL, null=True)
 
     class Meta:
         ordering = ["-available_on"]
@@ -79,6 +79,8 @@ class Order(models.Model):
     district = models.CharField(max_length=100, help_text="อำเภอ")
     province = models.CharField(max_length=100)
     postal_code = models.CharField(max_length=20)
+    order_date = models.DateField(blank=True, null=True)
+    order_amount = models.DecimalField(max_digits=8, decimal_places=2, default=0)
     created_at = models.DateTimeField(auto_now_add=True)
     status = models.PositiveSmallIntegerField(default=0)
 

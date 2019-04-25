@@ -17,7 +17,8 @@ REST_FRAMEWORK = {
      ),
     'DEFAULT_PERMISSION_CLASSES': (
         'rest_framework.permissions.IsAuthenticated',
-    )
+    ),
+    'DATETIME_FORMAT': "%Y-%m-%dT%H:%M:%S.%fZ",
 }
 
 REST_AUTH_SERIALIZERS = {

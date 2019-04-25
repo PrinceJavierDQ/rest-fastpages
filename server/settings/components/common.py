@@ -44,6 +44,9 @@ SHARED_APPS: Tuple[str, ...] = (
 
     # REST
     'rest_framework',   # Defined in both shared apps and tenant apps
+    'rest_framework_simplejwt.token_blacklist',
+    'django_rest_passwordreset',
+
     # REST authentication
     # 'rest_framework.authtoken',
     # 'rest_auth',
@@ -66,6 +69,7 @@ TENANT_APPS: Tuple[str, ...] = (
 
     # REST
     'rest_framework',   # Defined in both shared apps and tenant apps
+    'django_rest_passwordreset',
 
     # Your apps go here:
     'server.pages',
@@ -102,7 +106,9 @@ INSTALLED_APPS: Tuple[str, ...] = (
 
     # REST
     'rest_framework',
-    'rest_framework.authtoken',
+    # 'rest_framework.authtoken',
+    'rest_framework_simplejwt.token_blacklist',
+    'django_rest_passwordreset',
     # 'rest_auth',
     'corsheaders',
 )

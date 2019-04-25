@@ -16,6 +16,7 @@ from django.conf.urls.static import static
 from django.conf.urls import include, url
 from django.contrib import admin
 from django.views.generic import TemplateView
+from rest_framework.documentation import include_docs_urls
 
 from server.main_app import urls as main_urls
 from server.main_app.views import index
@@ -55,6 +56,9 @@ urlpatterns = [
     url(r'^api/auth/token/$', MyTokenObtainPairView.as_view(), name='token_obtain_pair'),
     url(r'^api/auth/token/refresh/$', jwt_views.TokenRefreshView.as_view(), name='token_refresh'),
     url(r'^api/v1/', include(api_v1)),
+    url(r'^api/v1/password/', include('django_rest_passwordreset.urls', namespace='password_reset')),
+    url(r'^api/v1/docs/', include_docs_urls(title='FastPages API'))
+
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
