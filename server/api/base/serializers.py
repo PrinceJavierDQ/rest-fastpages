@@ -59,15 +59,17 @@ class PageSerializer(serializers.ModelSerializer):
         exclude = ('owner', 'updater', 'created_at', 'updated_at', )
 
     def update(self, instance, validated_data):
-        print('validated_data =>',validated_data)
+        # print('validated_data =>', validated_data)
         variant_options = validated_data.get('product_variant_options')
-        print(variant_options)
+        # print(variant_options)
         if variant_options:
             variant_options = validated_data.pop('product_variant_options')
-            print("Variant Options (POP)", variant_options)
+            #  print("Variant Options (POP)", variant_options)
+            """
+            If we not use instance.save() provided in parent class, file upload will not use 'upload_to' as defined
+            in Model class
+            """
             instance = super(PageSerializer, self).update(instance, validated_data)
-            # Page.objects.filter(pk=instance.id).update(**validated_data)
-            # instance = Page.objects.filter(pk=instance.id).first()
             keep_options = []
             # existing_ids = [o.id for o in instance.product_variant_options]
             for variant_option in variant_options:

@@ -10,6 +10,7 @@ class NestedMultipartParser(parsers.MultiPartParser):
 
     def parse(self, stream, media_type=None, parser_context=None):
         result = super().parse(stream=stream, media_type=media_type, parser_context=parser_context)
+        print(result.files)
         data = {}
         for key, value in result.data.items():
             if '[' in key and ']' in key:
@@ -32,10 +33,18 @@ class NestedMultipartParser(parsers.MultiPartParser):
                 # TODO len(keys) == 2:
             else:
                 data[key] = value
-        print(data)
-
         # print(data)
-        return parsers.DataAndFiles(data, result.files)
+
+        """
+        If pass only data, file field returned error as "no file was submitted"
+        If QueryDict.dict() used, it works
+        """
+        # TODO investigate for this issue
+        q_dict = QueryDict('', mutable=True)
+        q_dict.update(data)
+        # print('==================+++++==============*****+========================')
+        # print(q_dict)
+        return parsers.DataAndFiles(q_dict.dict(), result.files)
 
     def get_nested_keys(self, data):
         tmp_keys = data.split('[')
