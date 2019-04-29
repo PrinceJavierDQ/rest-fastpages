@@ -1,3 +1,4 @@
+import logging
 from rest_framework import serializers
 from rest_framework.response import Response
 
@@ -29,51 +30,72 @@ class TenantUserSerializer(serializers.ModelSerializer):
         fields = ('id', 'email', 'first_name', 'last_name', 'tenants')
 
 
-class ProductOptionSerializer(serializers.ModelSerializer):
+class ProductVariantOptionSerializer(serializers.ModelSerializer):
+
+    id = serializers.IntegerField(required=False)
+
     class Meta:
         model = ProductVariantOption
         fields = ('id', 'variant_name', 'variant_value')
 
 
-class PageListSerializer(serializers.ModelSerializer):
+class PageSerializer(serializers.ModelSerializer):
+    product_image1 = serializers.ImageField(required=False, max_length=None)
+    product_image2 = serializers.ImageField(required=False, max_length=None)
+    product_image3 = serializers.ImageField(required=False, max_length=None)
+    product_image4 = serializers.ImageField(required=False, max_length=None)
+    product_image5 = serializers.ImageField(required=False, max_length=None)
+    product_image6 = serializers.ImageField(required=False, max_length=None)
 
-    product_variant_options = ProductOptionSerializer(many=True)
+    product_showcase1 = serializers.ImageField(required=False, max_length=None)
+    product_showcase2 = serializers.ImageField(required=False, max_length=None)
+    product_showcase3 = serializers.ImageField(required=False, max_length=None)
+    product_showcase4 = serializers.ImageField(required=False, max_length=None)
+
+    product_variant_options = ProductVariantOptionSerializer(required=False, many=True)
 
     class Meta:
         model = Page
-        fields = ('id', 'title', 'slug', 'status', 'available_on', 'available_off',
-                  'product_name', 'product_price', 'product_discount_price', 'product_discount_until',
-                  'product_image1', 'product_image2', 'product_image3',
-                  'product_image4', 'product_image5', 'product_image6',
-                  'product_showcase1', 'product_showcase2', 'product_showcase3',
-                  'product_variant_options', 'product_details')
+        exclude = ('owner', 'updater', 'created_at', 'updated_at', )
 
     def update(self, instance, validated_data):
-        variant_options = validated_data.pop('product_variant_options')
+        print('validated_data =>',validated_data)
+        variant_options = validated_data.get('product_variant_options')
+        print(variant_options)
+        if variant_options:
+            variant_options = validated_data.pop('product_variant_options')
+            print("Variant Options (POP)", variant_options)
+            instance = super(PageSerializer, self).update(instance, validated_data)
+            # Page.objects.filter(pk=instance.id).update(**validated_data)
+            # instance = Page.objects.filter(pk=instance.id).first()
+            keep_options = []
+            # existing_ids = [o.id for o in instance.product_variant_options]
+            for variant_option in variant_options:
+                print('Variant Option', variant_option)
 
-        pid = Page.objects.filter(pk=instance.id).update(**validated_data)
-        instance = Page.objects.filter(pk=pid).first()
-        keep_options = []
-        # existing_ids = [o.id for o in instance.product_variant_options]
-        for variant_option in variant_options.all():
-            if "id" in variant_option.keys():  # existing record
-                if ProductVariantOption.objects.filter(id=variant_options["id"]).exists():
-                    # this record may need update
-                    option = ProductVariantOption.objects.get(id=variant_options["id"])
-                    option.variant_name = variant_option.get('variant_name', option.variant_name)
-                    option.variant_value = variant_option.get('variant_value', option.variant_value)
-                    option.save()
+                if "id" in variant_option.keys():  # existing record
+                    print(variant_option)
+                    if ProductVariantOption.objects.filter(id=variant_option["id"]).exists():
+                        # this record may need update
+                        option = ProductVariantOption.objects.get(id=variant_option["id"])
+                        option.variant_name = variant_option.get('variant_name', option.variant_name)
+                        option.variant_value = variant_option.get('variant_value', option.variant_value)
+                        option.save()
+                        keep_options.append(option.id)
+                    else:
+                        option = ProductVariantOption.objects.create(page=instance, **variant_option)
+                        keep_options.append(option.id)
+                else:
+                    option = ProductVariantOption.objects.create(page=instance, **variant_option)
                     keep_options.append(option.id)
-                # else:
-                    # option = ProductVariantOption.objects.create(page=instance, **variant_option)
-                    # keep_options.append(option.id)
-            else:
-                option = ProductVariantOption.objects.create(page=instance, **variant_option)
-                keep_options.append(option.id)
 
-        for variant_option in instance.product_variant_options.all():
-            if variant_option.id not in keep_options:
-                variant_option.delete()
+            for variant_option in instance.product_variant_options.all():
+                if variant_option.id not in keep_options:
+                    variant_option.delete()
+
+            return instance
+
+        instance = super(PageSerializer, self).update(instance, validated_data)
 
         return instance
 
@@ -85,7 +107,7 @@ class PageCreateSerializer(serializers.ModelSerializer):
         fields = ('id', 'title', 'slug', 'status', 'available_on', 'available_off')
 
 
-class PageSerializer(serializers.ModelSerializer):
+class PageListSerializer(serializers.ModelSerializer):
 
     product_image1 = serializers.ImageField(max_length=None, use_url=True)
     product_image2 = serializers.ImageField(max_length=None, use_url=True)
@@ -99,12 +121,11 @@ class PageSerializer(serializers.ModelSerializer):
     product_showcase3 = serializers.ImageField(max_length=None, use_url=True)
     product_showcase4 = serializers.ImageField(max_length=None, use_url=True)
 
-    product_variant_options = ProductOptionSerializer(many=True)
+    product_variant_options = ProductVariantOptionSerializer(many=True)
 
     class Meta:
         model = Page
         fields = '__all__'
-        create_only_fields = ('title', 'slug', 'status', 'available_on', 'available_off')
 
 
 class OrderSerializer(serializers.ModelSerializer):

@@ -3,6 +3,7 @@ import uuid
 from django.db import models
 from django.template.defaultfilters import slugify
 from django.db.models.signals import pre_save
+from django.utils.crypto import get_random_string
 from server.accounts.models import TenantUser
 
 
@@ -14,10 +15,14 @@ def upload_helper(instance, filename):
     return os.path.join(u'uploads', model_name, str(instance_id), name)
 
 
+def my_random_slug():
+    return get_random_string(length=20)
+
+
 class Page(models.Model):
 
     title = models.CharField(max_length=200)
-    slug = models.SlugField(unique=True, max_length=20)
+    slug = models.SlugField(blank=True, default=my_random_slug, unique=True, max_length=20)
     status = models.BooleanField(default=True)
     available_on = models.DateField(null=True, blank=True)
     available_off = models.DateField(null=True, blank=True)
@@ -93,7 +98,8 @@ class OrderItem(models.Model):
 
 
 def create_slug(instance, new_slug=None):
-    slug = slugify(instance.title)
+    # slug = slugify(instance.title)
+    slug = get_random_string(length=20)
     if new_slug is not None:
         slug = new_slug
     qs = Page.objects.filter(slug=slug).order_by("-id")

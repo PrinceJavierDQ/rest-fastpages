@@ -1,5 +1,5 @@
 from rest_framework import viewsets, status
-from rest_framework.parsers import JSONParser,  MultiPartParser, FormParser
+from rest_framework.parsers import JSONParser,  MultiPartParser, FormParser, FileUploadParser
 from rest_framework.response import Response
 from rest_framework import permissions
 from rest_framework.decorators import list_route
@@ -7,7 +7,7 @@ from django.shortcuts import get_object_or_404
 from server.tenants.models import Client
 from server.accounts.models import TenantUser
 from server.pages.models import Page, Order
-from . import serializers
+from . import serializers, parser
 
 
 class UserViewSet(viewsets.ModelViewSet):
@@ -72,7 +72,7 @@ class PageViewSet(viewsets.ModelViewSet):
     queryset = Page.objects.all()
     serializer_class = serializers.PageSerializer
     permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
-    parser_classes = (MultiPartParser, FormParser, )
+    parser_classes = ( FormParser, parser.NestedMultipartParser, )
 
     def get_serializer_class(self):
         if self.action == 'list':
